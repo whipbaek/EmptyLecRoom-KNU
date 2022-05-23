@@ -2,6 +2,7 @@ package Model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -15,6 +16,7 @@ public class ITBuild {
 
     private ArrayList<ArrayList<String>> arrayLists = new ArrayList<>(); // 파일에서 데이터 읽어옴.
     private ArrayList<ClassInfo> classInfos = new ArrayList<>(); // 읽어온 데이터를 알맞게 파싱함.
+    private HashMap<String, ArrayList<Time>> classByRoom = new HashMap<>();
 
     public ArrayList<ArrayList<String>> getArrayLists() {
         return arrayLists;
@@ -76,5 +78,129 @@ public class ITBuild {
         }
     }
 
+    public HashMap<String, ArrayList<Time>> getClassByRoom() {
+        return classByRoom;
+    }
+
+    public void setClassByRoom(HashMap<String, ArrayList<Time>> classByRoom) {
+        this.classByRoom = classByRoom;
+    }
+
+    public void setClassByRoom(){
+        /**
+         * 먼저 ClassInfo 에서 순환하면서 Key 값 설정 및, ArrayList<Time> 객체를 할당한다.
+         */
+
+        //Key 값 설정 및 List 객체 생성
+        for (ClassInfo classInfo : classInfos) {
+            classByRoom.put(classInfo.getClassroom(),new ArrayList<>());
+        }
+
+        for (String classInfo : classByRoom.keySet()) {
+            ArrayList<Time> arrayList = new ArrayList<>();
+            for(ClassInfo classInfo2 : classInfos){
+                if(classInfo.equals(classInfo2.getClassroom())){
+                    for(Time temp : classInfo2.getTimetable()){
+                        arrayList.add(temp);
+                    }
+                }
+            }
+
+
+            classByRoom.put(classInfo, arrayList);
+        }
+    }
+
+    public void printClassByRoom(){
+        for(String room : classByRoom.keySet()){
+            System.out.println("room : " + room);
+            for(Time time : classByRoom.get(room)){
+                System.out.println(time);
+            }
+            System.out.println();
+        }
+    }
+
+    public String IsEmptyRoom(String roomNum, String nowDay, String nowTime){
+        /**
+         * ClassInfo
+         * classname
+         * floor
+         * classroom
+         * arraylist<Time>timetable -> Time 은 요일, 날짜, 시간
+         */
+
+        /**
+         * 1. 요일 비교
+         * 2. 요일이 같다면 시간 비교
+         * 3-1 만약 nowTime 이 시간내에 존재한다면
+         *  0. bool isEmpty = false
+         *  1. leftTimeInClass = (끝나는 시간 - nowTime) 한다. -> 어차피 한개의 경우밖에 존재하지 않음.
+         *
+         * 3-2. 만약 nowTime 이 시간내에 존재하지 않는다면 (강의실이 비어있는 경우)
+         *  0. bool isEmpty = true
+         *  1. 시작시간이 나보다 더 뒤인것만 체크
+         *  2. 체크후에, leftTimeOutClass = min(leftTimeOutClass)
+         *
+         *  TimeCalculator는 현재시각, 클래스 시작시각, 클래스 끝나는시각 3개를 설정해준다.
+         *  이후에 room이 비어있는지, 아닌지를 판단한다.
+         *  여부에 따라 다른 String을 반환한다.
+         */
+        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+
+        for (ClassInfo classInfo : classInfos) { //모든 클래스 정보를 가져온다.
+            if(roomNum.equals(classInfo.getClassroom())){ //classroom 이 같은지 확인
+                for(Time time : classInfo.getTimetable()){ //classroom 이 같은것 중 시간표를 가져온다.
+                    if(time.getDay().equals(nowDay)){ //날짜를 비교한다.
+                        timeCalculator2.setTimes(time.getStart(),time.getEnd()); //시간 셋팅
+                        timeCalculator2.compareTime(); //객체의 정보 셋팅
+                        if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
+                            //setClassName  classInfo.getClassname
+                            //setBackGroundColor = red
+                            //setText timeCalculator2.getResult();
+                            return timeCalculator2.getResult();
+                        }
+                    }
+                }
+            }
+        }
+
+        //위에서 반환이 되지 않았다면
+
+        //setClassName  classInfo.getClassname
+        //setBackGroundColor = blue
+        //setText timeCalculator2.getResult();
+        if(timeCalculator2.getLeftTime() == 99999){
+            timeCalculator2.setResult("이후에 수업이 없습니다.");
+        }
+        return timeCalculator2.getResult();
+    }
+
+
+    //EmptyRoomByClassRoom Ver
+    public String IsEmptyRoom2(String roomNum, String nowDay, String nowTime){
+
+        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+
+        ArrayList<Time> times = classByRoom.get(roomNum); //해당 호실의 타임 테이블을 가져온다.
+        for (Time time : times) {
+            if(nowDay.equals(time.getDay())){ //요일이 같다면
+                timeCalculator2.setTimes(time.getStart(), time.getEnd());
+                timeCalculator2.compareTime();
+                if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
+                    //setClassName  classInfo.getClassname
+                    //setBackGroundColor = red
+                    //setText timeCalculator2.getResult();
+                    return timeCalculator2.getResult();
+                }
+            }
+        }
+
+        //위에서 반환이 되지 않았다면
+        if(timeCalculator2.getLeftTime() == 99999){
+            timeCalculator2.setResult("이후에 수업이 없습니다.");
+        }
+        return timeCalculator2.getResult();
+    }
 }
 
