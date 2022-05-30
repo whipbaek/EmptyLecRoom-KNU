@@ -1,13 +1,9 @@
 package Model;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class TimeTable extends JFrame{
 
@@ -129,7 +125,7 @@ public class TimeTable extends JFrame{
         }
 
         timeTableAry = new ArrayList<String>();
-        timeTableAry.add("화" + ", " + "[" + "14 : 00" + "][" + "18 : 00" + "]");
+        timeTableAry.add("화" + ", " + "[" + "12 : 30" + "][" + "14 : 30" + "]");
         timeTableAry.add("월" + ", " + "[" + "14 : 00" + "][" + "18 : 00" + "]" + "수" + ", " + "[" + "14 : 00" + "][" + "18 : 00" + "]");
         stringToTimeTable(timeTableAry);
 
