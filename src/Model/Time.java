@@ -38,8 +38,12 @@ public class Time {
         this.end = end;
     }
 
-    @Override
+//    @Override
+//    public String toString(){
+//        return (day + ", " + "[" + start + "][" + end + "]");
+//    }/
+        @Override
     public String toString(){
-        return (day + ", " + "[" + start + "][" + end + "]");
+        return (day + ", " + start + ", " + end );
     }
 }

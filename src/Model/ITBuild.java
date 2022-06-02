@@ -85,7 +85,7 @@ public class ITBuild {
     public void showAllClassInfo(){
         for (ClassInfo classInfo : classInfos) {
             System.out.println(classInfo.getClassname());
-            System.out.println(classInfo.getTimetable());
+            classInfo.getTimetable2();
             System.out.println(classInfo.getClassroom());
             System.out.println(classInfo.getFloor());
             System.out.println();
@@ -171,9 +171,6 @@ public class ITBuild {
                 timeCalculator2.setTimes(time.getStart(), time.getEnd());
                 timeCalculator2.compareTime();
                 if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
-                    //setClassName  classInfo.getClassname
-                    //setBackGroundColor = red
-                    //setText timeCalculator2.getResult();
                     return timeCalculator2.getResult();
                 }
             }
@@ -184,6 +181,23 @@ public class ITBuild {
             timeCalculator2.setResult("이후에 수업이 없습니다.");
         }
         return timeCalculator2.getResult();
+    }
+
+    public boolean IsEmptyRoomBool(String roomNum, String nowDay, String nowTime){
+        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+
+        ArrayList<Time> times = classByRoom.get(roomNum); //해당 호실의 타임 테이블을 가져온다.
+        for (Time time : times) {
+            if(nowDay.equals(time.getDay())){ //요일이 같다면
+                timeCalculator2.setTimes(time.getStart(), time.getEnd());
+                timeCalculator2.compareTime();
+                if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
 

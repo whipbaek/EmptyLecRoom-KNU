@@ -45,6 +45,12 @@ public class ClassInfo {
         return timetable;
     }
 
+    public void getTimetable2() {
+        for (Time time : timetable) {
+            System.out.println(time);
+        }
+    }
+
     public void setTimetable(ArrayList<Time> timetable) {
         this.timetable = timetable;
     }

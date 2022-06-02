@@ -1,5 +1,7 @@
 package View;
 
+import Model.ITBuild;
+
 import java.awt.*;
 
 
@@ -7,9 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class floor extends JFrame implements ActionListener{
+public class FirstPage extends JFrame implements ActionListener{
 
 	ImageIcon b1_img = new ImageIcon("./img/b1.png");
 	ImageIcon f2_img = new ImageIcon("./img/2f.png");
@@ -17,7 +21,7 @@ public class floor extends JFrame implements ActionListener{
 
 
 	public static void main(String[] args) {
-		floor gui = new floor();
+		FirstPage gui = new FirstPage();
 		gui.setVisible(true);
 	}
 	String[] days = {"월","화","수","목","금"};
@@ -32,17 +36,20 @@ public class floor extends JFrame implements ActionListener{
 	private JComboBox<String> daysCombo = new JComboBox<>(days);
 	private JComboBox<String> hoursCombo = new JComboBox<>(hours);
 	private JComboBox<String> minsCombo = new JComboBox<>(mins);
+	private JButton b1;
+	private JButton second;
+	private JButton third;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+	public static ITBuild tempIt;
+	public static String nowTime;
+	public static String nowDay;
 
-	window2 wd2;
-	JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
-
-	public static final int WIDTH = 400;
-	public static final int HEIGHT = 260;
-
-	public floor(){
-		super("floor");
+	public FirstPage(){
+		super("Empty Lec Rooms for KNU IT5");
 		setSize(WIDTH,HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null); //화면 중앙
 
 		biggerPanel = new JPanel();
 		biggerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -52,10 +59,10 @@ public class floor extends JFrame implements ActionListener{
 		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm");
 		timeSpinner.setEditor(timeEditor);
 		timeSpinner.setValue(new Date());
-		JButton submit = new JButton("submit");
-		submit.addActionListener(this);
+		JButton submitbtn = new JButton("submit");
+		submitbtn.addActionListener(this);
 
-		JLabel label = new JLabel("Input Time");
+		JLabel label = new JLabel("Please enter a time ");
 		spinnerpanel = new JPanel();
 		spinnerpanel.setLayout(new GridLayout(1,5));
 		spinnerpanel.setBackground(Color.WHITE);
@@ -63,29 +70,28 @@ public class floor extends JFrame implements ActionListener{
 		spinnerpanel.add(daysCombo);
 		spinnerpanel.add(hoursCombo);
 		spinnerpanel.add(minsCombo);
-		spinnerpanel.add(submit);
+		spinnerpanel.add(submitbtn);
 
 		biggerPanel.add(spinnerpanel);
 
 		floorpanel = new JPanel();
 		floorpanel.setBackground(Color.WHITE);
 		floorpanel.setLayout(new FlowLayout());
-		JButton b1 = new JButton(b1_img);
+
+		b1 = new JButton(b1_img);
 		b1.setBorderPainted(false);
 		b1.setContentAreaFilled(false);
+		b1.addActionListener(new moveToFloorObj());
 
-		//b1.setPreferredSize(new Dimension(73, 130));
-		b1.addActionListener(this);
-		JButton second = new JButton(f2_img);
+		second = new JButton(f2_img);
 		second.setBorderPainted(false);
 		second.setContentAreaFilled(false);
-		//second.setPreferredSize(new Dimension(73, 102));
-		second.addActionListener(this);
-		JButton third = new JButton(f3_img);
+		second.addActionListener(new moveToFloorObj());
+
+		third = new JButton(f3_img);
 		third.setBorderPainted(false);
 		third.setContentAreaFilled(false);
-//		third.setPreferredSize(new Dimension(73, 102));
-		third.addActionListener(this);
+		third.addActionListener(new moveToFloorObj());
 
 		floorpanel.add(b1);
 		floorpanel.add(second);
@@ -98,42 +104,53 @@ public class floor extends JFrame implements ActionListener{
 
 
 
-
+// submit Event
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		String btnStr = e.getActionCommand();
 
+		tempIt = new ITBuild();
+		try {
+			tempIt.setArrayLists(); //파일에서 데이터 읽어옴
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		}
+
+		tempIt.setCinfos(); // 읽어온 데이터를 Cinfos에 저장함
+		tempIt.setClassByRoom(); // 호실 마다 시간표를 정리
+
+		// 특정시간을 매개변수로 넣고 비어있는지 차 있는지 확인한다.
+
+		floorpanel.setVisible(true);
+		System.out.println(e.getActionCommand());
 		String selectedDay = daysCombo.getItemAt(daysCombo.getSelectedIndex());
 		String selectedHour = hoursCombo.getItemAt(hoursCombo.getSelectedIndex());
 		String selectedMin = minsCombo.getItemAt(minsCombo.getSelectedIndex());
+		nowTime = selectedHour + ":" + selectedMin;
+		nowDay = selectedDay;
 
-		System.out.println(selectedDay + ", " + selectedHour + ", " + selectedMin);
-
-		if(btnStr.equals("submit")) {
-			floorpanel.setVisible(true);
-		}
-		else if(btnStr.equals("B1"))
-			wd2 = new window2("B1");
-		else if(btnStr.equals("2F"))
-			wd2 = new window2("2F");
-		else if(btnStr.equals("3F"))
-			wd2 = new window2("3F");
-
-		else {
-			System.err.println("unexpected error.");
-		}
 	}
 
-	private class getTimes implements ActionListener{
+	//층별 창으로 이동
+	private class moveToFloorObj implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String selectedHour = hoursCombo.getItemAt(hoursCombo.getSelectedIndex());
-			String selectedMin = minsCombo.getItemAt(minsCombo.getSelectedIndex());
 
-			System.out.println(selectedHour + ", " + selectedMin);
+			Object source = e.getSource();
+
+			if (b1.equals(source)) {
+				setVisible(false);
+			} else if (second.equals(source)) {
+				new Floor2();
+				setVisible(false);
+			} else if (third.equals(source)) {
+				new Floor3();
+				setVisible(false);
+			}
 		}
 	}
-
 }
+
+
 
 
