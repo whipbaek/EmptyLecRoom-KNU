@@ -46,7 +46,9 @@ public class TimeCalculator2 {
 	public void compareTime() {
 
 		//사용중일 때
-		if (nowTime.isAfter(startTime) && nowTime.isBefore(endTime)) {
+		if (nowTime.isAfter(startTime) && nowTime.isBefore(endTime) || nowTime.equals(startTime)) {
+			//사용중이면 연속적으로 강의가 있는지 Left Time 에 계산할 필요가 있다.
+			//근본적으로 endTime 값을 수정해서 가져오는게 현실적이지 않은가?
 			result =  "Classroom is now using, left time for empty is : " + nowTime.until(endTime, ChronoUnit.MINUTES) + " minutes";
 			LeftTime = nowTime.until(endTime, ChronoUnit.MINUTES);
 			isEmpty = false;
@@ -55,8 +57,8 @@ public class TimeCalculator2 {
 		//사용중이지 않을때 && 사용시작 시간이 나보다 뒤일때
 		else if (nowTime.isBefore(startTime)) {
 			if(LeftTime > nowTime.until(startTime, ChronoUnit.MINUTES)){
-				result = "Classroom is now empty, left time for next class is : " + nowTime.until(startTime, ChronoUnit.MINUTES) + " minutes";
 				LeftTime = nowTime.until(startTime, ChronoUnit.MINUTES);
+				result = "Classroom is now empty, left time for next class is : " + LeftTime + " minutes";
 			}
 		}
 		

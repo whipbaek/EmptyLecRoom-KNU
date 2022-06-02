@@ -24,11 +24,11 @@ public class ITBuild {
 
     public void setArrayLists() throws FileNotFoundException {
 
-        File file = new File("testdata.txt");
+        File file = new File("TestCrawling.txt");
         Scanner sc = new Scanner(file);
         int idx = 0;
         while (sc.hasNextLine()) {
-            arrayLists.add(new ArrayList<>());
+            arrayLists.add(new ArrayList<>()); //객체 생성
             while (true) {
                 if (!sc.hasNextLine()) break;
                 String line = sc.nextLine();
@@ -46,17 +46,31 @@ public class ITBuild {
     public void setCinfos() {
 
         for (ArrayList<String> arrayList : arrayLists) {
-            int size = arrayList.size();
+            int size = arrayList.size(); // 이미 강의수 만큼 만들어진 리스트의 사이즈를 받아옴
             if(!(arrayList.get(size-2).equals("IT융복합관(IT융복합공학관)"))) continue; //IT 융복합관 데이터만 가져오기 위함
 
             ArrayList<Time> times = new ArrayList<>(); // 각 수업마다 타임 테이블을 생성하기 위함
 
             //시간 파싱 index : 1 ~ size-2
-            for (int k = 1; k < size - 2; k++)
-                times.add(new Time(arrayList.get(k).substring(0, 1), arrayList.get(k).substring(2, 7), arrayList.get(k).substring(10, 15)));
-
+            for (int k = 1; k < size - 2; ) {
+                int tempIdx = k+1;
+                int cnt = 1;
+                if(arrayList.get(k).startsWith("08", 2)) { // 오전 8시에 시작하는 시간은 제외
+                    k++;
+                    continue;
+                }
+                while(true) {
+                    if (arrayList.get(k).substring(0, 1).equals(arrayList.get(tempIdx).substring(0, 1))) { // 시간표의 가장 앞 시간과 끝 시간을 파싱하기 위한 처리
+                        tempIdx++;
+                        cnt++;
+                    } else break;
+                }
+                // 최종적으로 요일이 같지 않아질때 이 쪽으로 탈출하기에 tempIdx 값을 -1 해줄 필요가 있다.
+                times.add(new Time(arrayList.get(k).substring(0, 1), arrayList.get(k).substring(2, 7), arrayList.get(tempIdx-1).substring(10, 15)));
+                k += cnt;
+            }
             //distinguish floor
-            Floors floor = Floors.BASEMENT;
+            Floors floor = null;
 
             switch (arrayList.get(size-1).charAt(0)){
                 case 'B': floor = Floors.BASEMENT; break;
@@ -71,7 +85,7 @@ public class ITBuild {
     public void showAllClassInfo(){
         for (ClassInfo classInfo : classInfos) {
             System.out.println(classInfo.getClassname());
-            System.out.println(classInfo.getTimetable());
+            classInfo.getTimetable2();
             System.out.println(classInfo.getClassroom());
             System.out.println(classInfo.getFloor());
             System.out.println();
@@ -157,9 +171,6 @@ public class ITBuild {
                 timeCalculator2.setTimes(time.getStart(), time.getEnd());
                 timeCalculator2.compareTime();
                 if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
-                    //setClassName  classInfo.getClassname
-                    //setBackGroundColor = red
-                    //setText timeCalculator2.getResult();
                     return timeCalculator2.getResult();
                 }
             }
@@ -170,6 +181,23 @@ public class ITBuild {
             timeCalculator2.setResult("이후에 수업이 없습니다.");
         }
         return timeCalculator2.getResult();
+    }
+
+    public boolean IsEmptyRoomBool(String roomNum, String nowDay, String nowTime){
+        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+
+        ArrayList<Time> times = classByRoom.get(roomNum); //해당 호실의 타임 테이블을 가져온다.
+        for (Time time : times) {
+            if(nowDay.equals(time.getDay())){ //요일이 같다면
+                timeCalculator2.setTimes(time.getStart(), time.getEnd());
+                timeCalculator2.compareTime();
+                if(!timeCalculator2.isEmpty()){ //강의실이 차 있다면
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
 
