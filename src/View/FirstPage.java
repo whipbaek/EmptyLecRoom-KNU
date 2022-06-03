@@ -1,7 +1,7 @@
 package View;
 
-import Model.ClassInfo;
-import Model.ITBuild;
+import Model.ParsingClass;
+import Model.ReadData;
 
 import java.awt.*;
 
@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class FirstPage extends JFrame implements ActionListener{
@@ -26,6 +25,7 @@ public class FirstPage extends JFrame implements ActionListener{
 			"11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30",
 			"31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50",
 			"51","52","53","54","55","56","57","58","59"};
+
 	private JPanel biggerPanel;
 	private JPanel spinnerpanel;
 	private JPanel floorpanel;
@@ -37,7 +37,9 @@ public class FirstPage extends JFrame implements ActionListener{
 	private JButton third;
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static ITBuild tempIt;
+	public static ReadData readData;
+	public static ParsingClass parsingClass;
+
 	public static String nowTime;
 	public static String nowDay;
 
@@ -105,24 +107,23 @@ public class FirstPage extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		tempIt = new ITBuild();
+		readData = new ReadData();
 		try {
-			tempIt.setArrayLists(); //파일에서 데이터 읽어옴
+			readData.setArrayLists(); //파일에서 데이터 읽어옴
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		}
-		tempIt.setCinfos(); // 읽어온 데이터를 Cinfos에 저장함
-		tempIt.setClassByRoom(); // 호실 마다 시간표를 정리
 
-		tempIt.showAllClassInfo();
-		tempIt.printClassByRoom();
-		// 특정시간을 매개변수로 넣고 비어있는지 차 있는지 확인한다.
+		parsingClass = new ParsingClass();
+
+		parsingClass.settingClassInfos(); // 읽어온 데이터를 Cinfos에 저장함
+		parsingClass.setClassByRoom(); // 호실 마다 시간표를 정리
 
 		floorpanel.setVisible(true);
-		System.out.println(e.getActionCommand());
 		String selectedDay = daysCombo.getItemAt(daysCombo.getSelectedIndex());
 		String selectedHour = hoursCombo.getItemAt(hoursCombo.getSelectedIndex());
 		String selectedMin = minsCombo.getItemAt(minsCombo.getSelectedIndex());
+
 		nowTime = selectedHour + ":" + selectedMin;
 		nowDay = selectedDay;
 

@@ -62,7 +62,7 @@ public class Floor3 extends JFrame implements ActionListener{
 		thirdpanel.add(btn301);
 
 		btn301.addActionListener(event -> {
-			text.setText(tempIt.IsEmptyRoom("301","월","11:30"));
+			text.setText(parsingClass.IsEmptyRoom("301","월","11:30"));
 		});
 
 		btn301.addMouseListener(new mouseOnTheRoom());
@@ -166,7 +166,7 @@ public class Floor3 extends JFrame implements ActionListener{
 	}
 
 	public boolean isEmptyFloorRoom(String roomNum){
-		return tempIt.IsEmptyRoomBool(roomNum, nowDay, nowTime);
+		return parsingClass.IsEmptyRoomBool(roomNum, nowDay, nowTime);
 	}
 
 	private class makingTimeTableOnClick implements ActionListener {
@@ -174,7 +174,7 @@ public class Floor3 extends JFrame implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			TimeTable tt = new TimeTable(e.getActionCommand(),tempIt.getClassInfos());
+			TimeTable tt = new TimeTable(e.getActionCommand(),parsingClass.getClassInfos());
 			tt.setVisible(true);
 		}
 	}
@@ -191,8 +191,8 @@ public class Floor3 extends JFrame implements ActionListener{
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			System.out.println(e.getSource());
-			text.setText(tempIt.IsEmptyRoom("301",nowDay,nowTime));
+			String btnText = ((JButton) e.getSource()).getText();
+			text.setText(parsingClass.IsEmptyRoom(btnText, nowDay, nowTime));
 		}
 
 		@Override
