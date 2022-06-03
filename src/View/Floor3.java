@@ -1,6 +1,5 @@
 package View;
 
-import Model.TimeTable;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -51,27 +50,20 @@ public class Floor3 extends JFrame implements ActionListener{
 		thirdpanel.add(text);
 
 		JButton btn301 = new JButton("301");
-		btn301.addActionListener(this);
 		btn301.setBounds(20, 20, 100, 130);
+		btn301.addMouseListener(new mouseOnTheRoom());
+		btn301.addActionListener(new makingTimeTableOnClick());
 
 		if(isEmptyFloorRoom("301")) btn301.setBackground(Color.blue);
 		else btn301.setBackground(Color.red);
 
-//		btn301.setBorderPainted(false);
-//		btn301.setContentAreaFilled(false);
 		thirdpanel.add(btn301);
 
-		btn301.addActionListener(event -> {
-			text.setText(parsingClass.IsEmptyRoom("301","월","11:30"));
-		});
-
-		btn301.addMouseListener(new mouseOnTheRoom());
-
-		btn301.addActionListener(new makingTimeTableOnClick());
 		JButton btn309 = new JButton("309");
+		btn309.addMouseListener(new mouseOnTheRoom());
+		btn309.addActionListener(new makingTimeTableOnClick());
 		btn309.setBounds(20, 160, 100, 130);
-//		btn309.setBorderPainted(false);
-//		btn309.setContentAreaFilled(false);
+
 		thirdpanel.add(btn309);
 
 		JButton btn317 = new JButton("317");
@@ -80,6 +72,8 @@ public class Floor3 extends JFrame implements ActionListener{
 
 		JButton btn355 = new JButton("355");
 		btn355.setBounds(130, 20, 230, 100);
+		btn355.addMouseListener(new mouseOnTheRoom());
+		btn355.addActionListener(new makingTimeTableOnClick());
 		thirdpanel.add(btn355);
 		if(isEmptyFloorRoom("355")) btn355.setBackground(Color.blue);
 		else btn355.setBackground(Color.red);

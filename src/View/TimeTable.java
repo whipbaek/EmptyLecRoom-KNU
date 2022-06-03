@@ -1,4 +1,7 @@
-package Model;
+package View;
+
+import Model.ClassInfo;
+import Model.Time;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class TimeTable extends JFrame{
     private static final Color newPink = new Color(255, 204 , 229);
 
 
-    private String[] dayAry = {"월", "화", "수", "목", "금"}; // 날짜 문자열 배열
+    private String[] dayAry = {"      월      ", "      화      ", "      수      ", "      목      ", "      금      "}; // 날짜 문자열 배열
     private JPanel[] dayPanelAry = new JPanel[5]; // 날짜 패널
 
     private String[] timeAry = {"9", "10", "11", "12", "13", "14", "15", "16", "17"}; // 시간 문자열 배열
