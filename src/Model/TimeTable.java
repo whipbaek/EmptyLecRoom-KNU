@@ -10,8 +10,6 @@ public class TimeTable extends JFrame{
     private static final int WIDTH = 500;
     private static final int HEIGHT = 800;
 
-    private ArrayList<String> timeTableAry; // 요일, start, end 를 받아옴
-
     private ArrayList<Color> colors = new ArrayList<Color>(); // Color
     private static final Color newRed = new Color(255, 153 , 153);
     private static final Color newOrange = new Color(255, 204 , 153);
@@ -33,6 +31,10 @@ public class TimeTable extends JFrame{
     private JPanel[] wedPanelAry = new JPanel[18]; // 시간표 패널
     private JPanel[] thuPanelAry = new JPanel[18]; // 시간표 패널
     private JPanel[] friPanelAry = new JPanel[18]; // 시간표 패널
+
+    private GridBagLayout gbLayout;
+    private GridBagConstraints gbc = new GridBagConstraints();
+
     private HashMap<String, Integer> timeHash = new HashMap<String, Integer>(){{ // 시간 -> index변환 해쉬 (시간과 위 시간표 배열을 연결하기 위한 것)
         put("09:00", 0);
         put("09:30", 1);
@@ -54,13 +56,7 @@ public class TimeTable extends JFrame{
         put("17:30", 17);
         put("18:00", 18);
     }};
-    private GridBagLayout gbLayout;
-    private GridBagConstraints gbc = new GridBagConstraints();
 
-    public static void main(String[] args) {
-//        TimeTable tt = new TimeTable();
-//        tt.setVisible(true);
-    }
 
     public TimeTable(String classNum, ArrayList<ClassInfo> classInfos) {
         super(classNum);
@@ -128,11 +124,8 @@ public class TimeTable extends JFrame{
             gbInsert(friPanelAry[i], 5, 1 + (i * 2), 1, 1 );
         }
 
-//        timeTableAry = new ArrayList<String>();
-//        timeTableAry.add("화" + ", " + "[" + "12 : 30" + "][" + "14 : 30" + "]");
-//        timeTableAry.add("월" + ", " + "[" + "14 : 00" + "][" + "18 : 00" + "]" + "수" + ", " + "[" + "14 : 00" + "][" + "18 : 00" + "]");
-//        stringToTimeTable(timeTableAry);
         String className = "";
+
         for (ClassInfo classInfo: classInfos) {
             if (classInfo.getClassroom().equals(classNum)) {
                 if (classInfo.getClassname().length() > 6) {
@@ -144,7 +137,6 @@ public class TimeTable extends JFrame{
                 } else {
                     className = classInfo.getClassname();
                 }
-//                className = classInfo.getClassname();
                 for (Time time : classInfo.getTimetable()) {
                     coloringTable(className, time.getDay(), time.getStart(), time.getEnd());
                 }
@@ -162,21 +154,6 @@ public class TimeTable extends JFrame{
         gbc.gridheight= h;
         add(c, gbc);
     }
-
-//    public void stringToTimeTable(ArrayList time) {
-//        for (int i = 0; i < time.size(); i++) {
-//            String timeString = time.get(i).toString();
-//            String[] arr = timeString.split(",|\\]|\\[");
-//
-//            if (arr.length == 5) {
-//                coloringTable(arr[0], arr[2], arr[4]);
-//            } else if (arr.length == 10) {
-//                coloringTable(arr[0], arr[2], arr[4]);
-//                coloringTable(arr[5], arr[7], arr[9]);
-//            }
-//            intForColor++;
-//        }
-//    }
 
     private void coloringTable (String className, String day, String start, String end) {
         for (int i = timeHash.get(start); i <= timeHash.get(end); i++) {

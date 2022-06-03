@@ -11,8 +11,7 @@ public class Time {
         this.end = end;
     }
 
-    public Time() {
-    }
+    public Time() {}
 
     public String getDay() {
         return day;
@@ -38,12 +37,6 @@ public class Time {
         this.end = end;
     }
 
-//    @Override
-//    public String toString(){
-//        return (day + ", " + "[" + start + "][" + end + "]");
-//    }/
-        @Override
-    public String toString(){
-        return (day + ", " + start + ", " + end );
-    }
+    @Override
+    public String toString() {return (day + ", " + start + ", " + end);}
 }

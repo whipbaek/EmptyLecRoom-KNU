@@ -16,7 +16,7 @@ public class ITBuild {
 
     private ArrayList<ArrayList<String>> arrayLists = new ArrayList<>(); // 파일에서 데이터 읽어옴.
     private ArrayList<ClassInfo> classInfos = new ArrayList<>(); // 읽어온 데이터를 알맞게 파싱함.
-    private HashMap<String, ArrayList<Time>> classByRoom = new HashMap<>();
+    private HashMap<String, ArrayList<Time>> classByRoom = new HashMap<>(); //읽어온 데이터를 기준으로 호수에 따른 시간표를 파싱함.
 
     public ArrayList<ArrayList<String>> getArrayLists() {
         return arrayLists;
@@ -24,7 +24,7 @@ public class ITBuild {
 
     public void setArrayLists() throws FileNotFoundException {
 
-        File file = new File("TestCrawling.txt");
+        File file = new File("finalCrawling.txt");
         Scanner sc = new Scanner(file);
         int idx = 0;
         while (sc.hasNextLine()) {
@@ -59,6 +59,13 @@ public class ITBuild {
                     k++;
                     continue;
                 }
+
+                System.out.println("prefix : " + (arrayList.get(k)).substring(2,4));
+                if( (Integer.parseInt((arrayList.get(k)).substring(2,4))) >= 18){ //오후 6시 이후 수업은 제외
+                    k++;
+                    continue;
+                }
+
                 while(true) {
                     if (arrayList.get(k).substring(0, 1).equals(arrayList.get(tempIdx).substring(0, 1))) { // 시간표의 가장 앞 시간과 끝 시간을 파싱하기 위한 처리
                         tempIdx++;
@@ -70,12 +77,12 @@ public class ITBuild {
                 k += cnt;
             }
             //distinguish floor
-            Floors floor = null;
+            FloorEnum floor = null;
 
             switch (arrayList.get(size-1).charAt(0)){
-                case 'B': floor = Floors.BASEMENT; break;
-                case '2': floor = Floors.SECOND; break;
-                case '3': floor = Floors.THIRD; break;
+                case 'B': floor = FloorEnum.BASEMENT; break;
+                case '2': floor = FloorEnum.SECOND; break;
+                case '3': floor = FloorEnum.THIRD; break;
             }
 
             classInfos.add(new ClassInfo(arrayList.get(0), floor, arrayList.get(size - 1), times)); //classname, floor, classroom, timetable
@@ -85,7 +92,7 @@ public class ITBuild {
     public void showAllClassInfo(){
         for (ClassInfo classInfo : classInfos) {
             System.out.println(classInfo.getClassname());
-            classInfo.getTimetable2();
+            classInfo.printTimetable();
             System.out.println(classInfo.getClassroom());
             System.out.println(classInfo.getFloor());
             System.out.println();
@@ -161,9 +168,9 @@ public class ITBuild {
      */
 
     //EmptyRoomByClassRoom Ver
-    public String IsEmptyRoom2(String roomNum, String nowDay, String nowTime){
+    public String IsEmptyRoom(String roomNum, String nowDay, String nowTime){
 
-        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+        TimeCalculator timeCalculator2 = new TimeCalculator(nowTime);
 
         ArrayList<Time> times = classByRoom.get(roomNum); //해당 호실의 타임 테이블을 가져온다.
         for (Time time : times) {
@@ -184,7 +191,7 @@ public class ITBuild {
     }
 
     public boolean IsEmptyRoomBool(String roomNum, String nowDay, String nowTime){
-        TimeCalculator2 timeCalculator2 = new TimeCalculator2(nowTime);
+        TimeCalculator timeCalculator2 = new TimeCalculator(nowTime);
 
         ArrayList<Time> times = classByRoom.get(roomNum); //해당 호실의 타임 테이블을 가져온다.
         for (Time time : times) {

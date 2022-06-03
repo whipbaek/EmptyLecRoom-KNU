@@ -1,24 +1,19 @@
 package View;
 
+import Model.TimeTable;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
+import java.awt.event.*;
 import javax.swing.*;
-
 import static View.FirstPage.*;
 
 public class Floor3 extends JFrame implements ActionListener{
 
+	public static JLabel text = new JLabel("강의실 현황: ");
 	private JPanel thirdpanel;
 	ImageIcon t1 = new ImageIcon("./img/t1.png"); //
 	ImageIcon t2 = new ImageIcon("./img/t2.png"); //
 	ImageIcon ele = new ImageIcon("./img/elevator.png");
 	ImageIcon toi = new ImageIcon("./img/toi.png");
-
-	timetable tt;
-
 
 	public static void main(String[] args) {
 		 new Floor3();
@@ -49,7 +44,7 @@ public class Floor3 extends JFrame implements ActionListener{
 		bar.add(second);
 		bar.add(third);
 
-		JLabel text = new JLabel("강의실 현황: ");
+
 		text.setBounds(175,305,400,30);
 		text.setOpaque(true);
 		text.setBackground(Color.pink);
@@ -67,21 +62,12 @@ public class Floor3 extends JFrame implements ActionListener{
 		thirdpanel.add(btn301);
 
 		btn301.addActionListener(event -> {
-			text.setText(tempIt.IsEmptyRoom2("301","월","11:30"));
+			text.setText(tempIt.IsEmptyRoom("301","월","11:30"));
 		});
 
-		btn301.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				System.out.println(evt.getSource());
-				text.setText(tempIt.IsEmptyRoom2("301",nowDay,nowTime));
-			}
+		btn301.addMouseListener(new mouseOnTheRoom());
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				text.setText("");
-			}
-		});
-
-
+		btn301.addActionListener(new makingTimeTableOnClick());
 		JButton btn309 = new JButton("309");
 		btn309.setBounds(20, 160, 100, 130);
 //		btn309.setBorderPainted(false);
@@ -183,4 +169,35 @@ public class Floor3 extends JFrame implements ActionListener{
 		return tempIt.IsEmptyRoomBool(roomNum, nowDay, nowTime);
 	}
 
+	private class makingTimeTableOnClick implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			TimeTable tt = new TimeTable(e.getActionCommand(),tempIt.getClassInfos());
+			tt.setVisible(true);
+		}
+	}
+	private class mouseOnTheRoom implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			System.out.println(e.getSource());
+			text.setText(tempIt.IsEmptyRoom("301",nowDay,nowTime));
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			text.setText("");
+		}
+	}
 }

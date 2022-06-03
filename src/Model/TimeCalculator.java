@@ -3,7 +3,7 @@ package Model;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-public class TimeCalculator2 {
+public class TimeCalculator {
 
 	LocalTime nowTime; // 현재 시간
 	LocalTime startTime; // 시작 시간
@@ -13,15 +13,15 @@ public class TimeCalculator2 {
 
 	private String result="";
 
-	public TimeCalculator2() {}
+	public TimeCalculator() {}
 
-	public TimeCalculator2(String input, String start, String end){
+	public TimeCalculator(String input, String start, String end){
 		nowTime = StringToLocal(input);
 		startTime = StringToLocal(start);
 		endTime = StringToLocal(end);
 	}
 
-	public TimeCalculator2(String input){
+	public TimeCalculator(String input){
 		nowTime = StringToLocal(input);
 	}
 
@@ -64,16 +64,6 @@ public class TimeCalculator2 {
 		
 	}
 
-	public static void main(String[] args) {
-		LocalTime s1 = LocalTime.of(20,20);
-		LocalTime n1 = LocalTime.of(18,20);
-
-		long until = n1.until(s1, ChronoUnit.MINUTES);
-		System.out.println("until = " + until);
-
-	}
-
-
 	public LocalTime getNowTime() {
 		return nowTime;
 	}
@@ -98,9 +88,7 @@ public class TimeCalculator2 {
 		this.endTime = endTime;
 	}
 
-	public boolean isEmpty() {
-		return isEmpty;
-	}
+	public boolean isEmpty() {return isEmpty; }
 
 	public void setEmpty(boolean empty) {
 		isEmpty = empty;

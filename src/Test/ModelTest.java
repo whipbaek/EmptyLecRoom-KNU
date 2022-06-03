@@ -1,4 +1,6 @@
-package Model;
+package Test;
+
+import Model.ITBuild;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,12 +23,8 @@ public class ModelTest {
         // 특정시간을 매개변수로 넣고 비어있는지 차 있는지 확인한다.
         for (String room : itBuild.getClassByRoom().keySet()) {
             System.out.println("room : " + room);
-            System.out.println(itBuild.IsEmptyRoom2(room, "월", "11:11"));
+            System.out.println(itBuild.IsEmptyRoom(room, "월", "11:11"));
         }
-
-        System.out.println("자바는 지금?");
-        System.out.println(itBuild.IsEmptyRoom2("355", "목", "14:00"));
-//
 
 
     }

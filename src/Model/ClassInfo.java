@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 public class ClassInfo {
     private String classname;
-    private Floors floor;
+    private FloorEnum floor;
     private String classroom;
     private ArrayList<Time> timetable;
 
-    public ClassInfo(String classname,Floors  floor, String classroom, ArrayList<Time> arrayList) {
+    public ClassInfo(String classname, FloorEnum floor, String classroom, ArrayList<Time> arrayList) {
         this.classname = classname; //클래스명
         this.floor = floor; //층수
         this.classroom = classroom; //호수
@@ -25,11 +25,11 @@ public class ClassInfo {
         this.classname = classname;
     }
 
-    public Floors getFloor() {
+    public FloorEnum getFloor() {
         return floor;
     }
 
-    public void setFloor(Floors floor) {
+    public void setFloor(FloorEnum floor) {
         this.floor = floor;
     }
 
@@ -45,7 +45,7 @@ public class ClassInfo {
         return timetable;
     }
 
-    public void getTimetable2() {
+    public void printTimetable() {
         for (Time time : timetable) {
             System.out.println(time);
         }

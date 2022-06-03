@@ -1,5 +1,6 @@
 package View;
 
+import Model.ClassInfo;
 import Model.ITBuild;
 
 import java.awt.*;
@@ -19,11 +20,6 @@ public class FirstPage extends JFrame implements ActionListener{
 	ImageIcon f2_img = new ImageIcon("./img/2f.png");
 	ImageIcon f3_img = new ImageIcon("./img/3f.png");
 
-
-	public static void main(String[] args) {
-		FirstPage gui = new FirstPage();
-		gui.setVisible(true);
-	}
 	String[] days = {"월","화","수","목","금"};
 	String[] hours = {"09","10","11","12","13","14","15","16","17","18"};
 	String[] mins = {"00","01","02","03","04","05","06","07","08","09","10",
@@ -103,8 +99,9 @@ public class FirstPage extends JFrame implements ActionListener{
 	}
 
 
-
-// submit Event
+	/**
+	 * Submit Event
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -114,10 +111,11 @@ public class FirstPage extends JFrame implements ActionListener{
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		}
-
 		tempIt.setCinfos(); // 읽어온 데이터를 Cinfos에 저장함
 		tempIt.setClassByRoom(); // 호실 마다 시간표를 정리
 
+		tempIt.showAllClassInfo();
+		tempIt.printClassByRoom();
 		// 특정시간을 매개변수로 넣고 비어있는지 차 있는지 확인한다.
 
 		floorpanel.setVisible(true);
