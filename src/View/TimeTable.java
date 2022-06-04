@@ -74,7 +74,7 @@ public class TimeTable extends JFrame{
         colors.add(newPink);
 
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gbLayout = new GridBagLayout();
         setLayout(gbLayout);
         gbc.fill= GridBagConstraints.BOTH;

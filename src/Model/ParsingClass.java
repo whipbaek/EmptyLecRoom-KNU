@@ -37,6 +37,11 @@ public class ParsingClass {
                     continue;
                 }
 
+                if(arrayList.get(k).substring(0,1).equals("토")) {
+                    k++;
+                    continue;
+                }
+
                 while(true) {
                     // 시간표의 가장 앞 시간과 끝 시간을 파싱하기 위한 처리
                     if (arrayList.get(k).substring(0, 1).equals(arrayList.get(tempIdx).substring(0, 1))) {  // 같은 요일일 경우, 시간이 연달아 있기에 같은 요일인지 확인한다.
@@ -64,6 +69,7 @@ public class ParsingClass {
     public void showAllClassInfo(){
         for (ClassInfo classInfo : classInfos) {
             System.out.println(classInfo.getClassname());
+            if(classInfo.getTimetable().size() == 0) System.out.println("null data");
             classInfo.printTimetable();
             System.out.println(classInfo.getClassroom());
             System.out.println(classInfo.getFloor());
@@ -90,8 +96,10 @@ public class ParsingClass {
             ArrayList<Time> arrayList = new ArrayList<>();
             for(ClassInfo classInfo2 : classInfos){
                 if(classInfo.equals(classInfo2.getClassroom())){ // Room 이 같은지 검사한다.
-                    for(Time temp : classInfo2.getTimetable()){ // Room 이 같은 수업의 시간표를 가져온다.
-                        arrayList.add(temp);
+                    if(classInfo2.getTimetable().size() != 0) {
+                        for (Time temp : classInfo2.getTimetable()) { // Room 이 같은 수업의 시간표를 가져온다.
+                            arrayList.add(temp); //9시에서 6시 사이 아무것도 없는 값들도 존재
+                        }
                     }
                 }
             }
