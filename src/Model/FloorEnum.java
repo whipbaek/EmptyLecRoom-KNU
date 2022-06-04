@@ -1,5 +1,5 @@
 package Model;
 
-public enum Floors {
+public enum FloorEnum{
     BASEMENT, SECOND, THIRD
 }

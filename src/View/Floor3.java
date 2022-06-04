@@ -1,24 +1,18 @@
 package View;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
+import java.awt.event.*;
 import javax.swing.*;
-
 import static View.FirstPage.*;
 
 public class Floor3 extends JFrame implements ActionListener{
 
+	public static JLabel text = new JLabel("강의실 현황: ");
 	private JPanel thirdpanel;
 	ImageIcon t1 = new ImageIcon("./img/t1.png"); //
 	ImageIcon t2 = new ImageIcon("./img/t2.png"); //
 	ImageIcon ele = new ImageIcon("./img/elevator.png");
 	ImageIcon toi = new ImageIcon("./img/toi.png");
-
-	timetable tt;
-
 
 	public static void main(String[] args) {
 		 new Floor3();
@@ -49,43 +43,27 @@ public class Floor3 extends JFrame implements ActionListener{
 		bar.add(second);
 		bar.add(third);
 
-		JLabel text = new JLabel("강의실 현황: ");
+
 		text.setBounds(175,305,400,30);
 		text.setOpaque(true);
 		text.setBackground(Color.pink);
 		thirdpanel.add(text);
 
 		JButton btn301 = new JButton("301");
-		btn301.addActionListener(this);
 		btn301.setBounds(20, 20, 100, 130);
+		btn301.addMouseListener(new mouseOnTheRoom());
+		btn301.addActionListener(new makingTimeTableOnClick());
 
 		if(isEmptyFloorRoom("301")) btn301.setBackground(Color.blue);
 		else btn301.setBackground(Color.red);
 
-//		btn301.setBorderPainted(false);
-//		btn301.setContentAreaFilled(false);
 		thirdpanel.add(btn301);
 
-		btn301.addActionListener(event -> {
-			text.setText(tempIt.IsEmptyRoom2("301","월","11:30"));
-		});
-
-		btn301.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				System.out.println(evt.getSource());
-				text.setText(tempIt.IsEmptyRoom2("301",nowDay,nowTime));
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				text.setText("");
-			}
-		});
-
-
 		JButton btn309 = new JButton("309");
+		btn309.addMouseListener(new mouseOnTheRoom());
+		btn309.addActionListener(new makingTimeTableOnClick());
 		btn309.setBounds(20, 160, 100, 130);
-//		btn309.setBorderPainted(false);
-//		btn309.setContentAreaFilled(false);
+
 		thirdpanel.add(btn309);
 
 		JButton btn317 = new JButton("317");
@@ -94,6 +72,8 @@ public class Floor3 extends JFrame implements ActionListener{
 
 		JButton btn355 = new JButton("355");
 		btn355.setBounds(130, 20, 230, 100);
+		btn355.addMouseListener(new mouseOnTheRoom());
+		btn355.addActionListener(new makingTimeTableOnClick());
 		thirdpanel.add(btn355);
 		if(isEmptyFloorRoom("355")) btn355.setBackground(Color.blue);
 		else btn355.setBackground(Color.red);
@@ -180,7 +160,38 @@ public class Floor3 extends JFrame implements ActionListener{
 	}
 
 	public boolean isEmptyFloorRoom(String roomNum){
-		return tempIt.IsEmptyRoomBool(roomNum, nowDay, nowTime);
+		return parsingClass.IsEmptyRoomBool(roomNum, nowDay, nowTime);
 	}
 
+	private class makingTimeTableOnClick implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			TimeTable tt = new TimeTable(e.getActionCommand(),parsingClass.getClassInfos());
+			tt.setVisible(true);
+		}
+	}
+	private class mouseOnTheRoom implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			String btnText = ((JButton) e.getSource()).getText();
+			text.setText(parsingClass.IsEmptyRoom(btnText, nowDay, nowTime));
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			text.setText("");
+		}
+	}
 }
