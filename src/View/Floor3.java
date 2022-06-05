@@ -57,6 +57,7 @@ public class Floor3 extends JFrame implements ActionListener{
 
 		thirdStateText.setBounds(175,305,400,30);
 		thirdState.add(thirdStateText);
+//		thirdStateText.setFont(font.deriveFont(Font.BOLD, 12f));
 
 		RoundedButton btn301 = new RoundedButton("301");
 		btn301.setBounds(20, 20, 100, 130);
