@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 
+import static View.FirstPage.knuLogo;
+
 public class TimeTable extends JFrame{
 
     private static final int WIDTH = 500;
@@ -63,6 +65,7 @@ public class TimeTable extends JFrame{
 
     public TimeTable(String classNum, ArrayList<ClassInfo> classInfos) {
         super(classNum);
+        setIconImage(knuLogo.getImage());
 
         colors.add(newRed);
         colors.add(newOrange);

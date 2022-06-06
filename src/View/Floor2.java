@@ -28,7 +28,7 @@ public class Floor2 extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null); //화면 중앙
-
+        setIconImage(knuLogo.getImage());
 
         secondState = new JPanel();
         secondState.setBackground(Color.WHITE);

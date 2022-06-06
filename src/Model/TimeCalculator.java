@@ -46,9 +46,9 @@ public class TimeCalculator {
 			if(nowTime.until(endTime, ChronoUnit.MINUTES) >= 60){
 				long hour = 0;
 				long min = 0;
-				hour = (nowTime.until(endTime, ChronoUnit.MINUTES)/60);
-				min = (nowTime.until(endTime, ChronoUnit.MINUTES)%60);
-				result = "<html>현재 강의실이 사용중입니다.<br>" + hour + "시간" + min + "분 후에 강의가 마칩니다.</html>";
+				hour = (nowTime.until(endTime, ChronoUnit.MINUTES))/60;
+				min = (nowTime.until(endTime, ChronoUnit.MINUTES))%60;
+				result =  "<html>현재 강의실이 사용중입니다.<br>" + hour + "시간 " + min + "분 후에 강의가 마칩니다.</html>";
 			}else {
 				result = "<html>현재 강의실이 사용중입니다.<br>" + nowTime.until(endTime, ChronoUnit.MINUTES) + "분 후에 강의가 마칩니다.</html>";
 			}
@@ -58,11 +58,11 @@ public class TimeCalculator {
 
 		//사용중이지 않을때 && 사용시작 시간이 나보다 뒤일때
 		else if (nowTime.isBefore(startTime)) {
-			if(LeftTime > nowTime.until(startTime, ChronoUnit.MINUTES)){
+			if(LeftTime > nowTime.until(startTime, ChronoUnit.MINUTES)) {
 				LeftTime = nowTime.until(startTime, ChronoUnit.MINUTES);
 
-
 				if(LeftTime >= 60){
+
 					long hour = 0;
 					long min = 0;
 					hour = LeftTime/60;
