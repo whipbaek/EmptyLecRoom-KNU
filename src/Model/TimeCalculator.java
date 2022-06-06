@@ -42,7 +42,16 @@ public class TimeCalculator {
 
 		//사용중일 때 -> (시작시간하고 끝시간 사이인경우 || 현재시각이랑 시작시간이 같은 경우)
 		if (nowTime.isAfter(startTime) && nowTime.isBefore(endTime) || nowTime.equals(startTime)) {
-			result =  "<html>현재 강의실이 사용중입니다.<br>" + nowTime.until(endTime, ChronoUnit.MINUTES) + "분 후에 강의가 마칩니다.</html>";
+
+			if(nowTime.until(endTime, ChronoUnit.MINUTES) >= 60){
+				long hour = 0;
+				long min = 0;
+				hour = (nowTime.until(endTime, ChronoUnit.MINUTES)/60);
+				min = (nowTime.until(endTime, ChronoUnit.MINUTES)%60);
+				result = "<html>현재 강의실이 사용중입니다.<br>" + hour + "시간" + min + "분 후에 강의가 마칩니다.</html>";
+			}else {
+				result = "<html>현재 강의실이 사용중입니다.<br>" + nowTime.until(endTime, ChronoUnit.MINUTES) + "분 후에 강의가 마칩니다.</html>";
+			}
 			LeftTime = nowTime.until(endTime, ChronoUnit.MINUTES);
 			isEmpty = false;
 		}
@@ -51,7 +60,18 @@ public class TimeCalculator {
 		else if (nowTime.isBefore(startTime)) {
 			if(LeftTime > nowTime.until(startTime, ChronoUnit.MINUTES)){
 				LeftTime = nowTime.until(startTime, ChronoUnit.MINUTES);
-				result = "<html>현재 강의실이 비어있습니다.<br> 다음 수업까지는 " + LeftTime + "분 남았습니다.</html>";
+
+
+				if(LeftTime >= 60){
+					long hour = 0;
+					long min = 0;
+					hour = LeftTime/60;
+					min = LeftTime%60;
+					result = "<html>현재 강의실이 비어있습니다.<br> 다음 수업까지는 " + hour + "시간 " + min + "분 남았습니다.</html>";
+				}else {
+					result = "<html>현재 강의실이 비어있습니다.<br> 다음 수업까지는 " + LeftTime + "분 남았습니다.</html>";
+				}
+
 			}
 		}
 		
