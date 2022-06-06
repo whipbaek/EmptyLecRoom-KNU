@@ -18,6 +18,7 @@ public class FirstPage extends JFrame implements ActionListener{
 	ImageIcon b1_img = new ImageIcon("./img/b1.png");
 	ImageIcon f2_img = new ImageIcon("./img/2f.png");
 	ImageIcon f3_img = new ImageIcon("./img/3f.png");
+	public static ImageIcon knuLogo = new ImageIcon("./img/knulogo.jpg");
 
 	public static Font font;
 
@@ -50,6 +51,7 @@ public class FirstPage extends JFrame implements ActionListener{
 		setSize(WIDTH-20,HEIGHT-240);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); //화면 중앙
+		setIconImage(knuLogo.getImage());
 
 		biggerPanel = new JPanel();
 		biggerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
