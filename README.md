@@ -29,7 +29,7 @@
 ## 프로그램 실행 흐름
 
 > 데이터 크롤링 -> 데이터 파싱 -> 계산 -> GUI 
-> * 데이터 크롤링은 이곳을 참고
+> * 데이터 크롤링은 [이곳](https://github.com/whipbaek/Python-Crawling/tree/main) 을 참고
 <br>
 
 ## 실행 방법 및 실행 화면
