@@ -12,8 +12,7 @@
 
 - Windows 10
 - JDK 1.8
-- Python 3.9
-- Intellij, Pycharm
+- Intellij
 <br>
 
 ## 구현 도메인
