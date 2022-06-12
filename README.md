@@ -3,7 +3,8 @@
 학교에서의 공강 시간때 시간을 보내기 위함 또는, 
 
 공부를 하고 싶을때 빈 강의실을 손쉽게 찾아보고 활용할 수 있는 프로그램을 만들고자 하였음.
-<br>
+<br><br>
+[Notion Link](https://truth-scallop-0eb.notion.site/EmptyRoom-KNU-0c51d32bce124386a64aa101ef83a0ba)
 
 ## 개발환경
 
